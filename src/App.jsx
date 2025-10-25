@@ -2,8 +2,10 @@ import Navbar from './Components/Navbar'
 import Heading from './Components/Heading';
 import OrderContainer from './Components/OrderContainer';
 import { Suspense } from 'react';
-const loadOrders = () => fetch("/orders.json").then((res) => res.json());
+import { ToastContainer } from 'react-toastify';
 
+
+const loadOrders = () => fetch("/orders.json").then((res) => res.json());
 
 
 const App = () => {
@@ -21,6 +23,19 @@ const App = () => {
                     <OrderContainer promise={ordersPromise}></OrderContainer>
                 </Suspense>
             </section>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 };

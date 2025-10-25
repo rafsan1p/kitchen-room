@@ -3,32 +3,39 @@ import States from './States';
 import OrderCard from './Cards/OrderCard';
 import CookingCard from './Cards/CookingCard';
 import ReadyCard from './Cards/ReadyCard';
+import { toast } from 'react-toastify';
 
 const OrderContainer = ({promise}) => {
-    const orders = use(promise);
+    const data = use(promise);
    
+    const [orders, setOrders] = useState(data);
     const [cookingItems, setCookingItems] = useState([]);
     const [readyItems, setReadyItems] = useState([]);
 
-    const handleOrder = (order) =>{
+    const handleOrder = (order) =>{  
         //age check koro cooking e order ache kina
         const isExist = cookingItems.find((item) => item.id == order.id);
         if(isExist){
-            alert("Already Cooking!!");
+            toast.error("Order already on processing")
             return;
         }
+        toast.success("Order Called!");
         //Cooking Items er vitore click koraa order k dhukabo
         const newCookingItems = [...cookingItems, order];
         setCookingItems(newCookingItems);
     };
 
     const handleCooking = (order) => {
+        order.cookedAt = new Date().toLocaleTimeString();
         //1.ready items er vitore order k dhukao
         const newReadyItems = [...readyItems, order];
         setReadyItems(newReadyItems);
         //2.cooking items er vitor theke order k remove
-        const remaining = cookingItems.filter(item => item.id !== order.id);
+        const remaining = cookingItems.filter((item) => item.id !== order.id);
         setCookingItems(remaining);
+        //3.orders theke order take remove kore dite hobe
+        const remainingOrders = orders.filter((item) => item.id !== order.id);
+        setOrders(remainingOrders);
     }
 
     return (
